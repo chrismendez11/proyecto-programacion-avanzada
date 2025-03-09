@@ -26,7 +26,7 @@ Antes de ejecutar este proyecto, asegúrate de tener instalado lo siguiente:
 3. **Configura las variables de entorno:**
    - Crea un archivo `.env` en la raíz del proyecto y agrega:
      ```env
-     PORT=3000
+     PORT=3001
      MONGO_URI=mongodb://localhost:27017/mi_base_de_datos
      ```
 
