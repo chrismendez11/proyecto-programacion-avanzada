@@ -32,4 +32,34 @@ router.delete("/habits/:id", async function (req, res, next) {
   res.json({ message: "Habit deleted" });
 });
 
+router.patch("/habits/markasdone/:id", async function (req, res, next) {
+  try {
+    const habit = await Habit.findById(req.params.id);
+    habit.lastDone = new Date();
+    if (timeDifferenceInHours(habit.lastDone, habit.createdAt) < 24) {
+      habit.lastUpdated = new Date();
+      habit.days = timeDifferenceInDays(habit.lastDone, habit.startedAt);
+      habit.save();
+      res.status(200).json({ message: "Habit mark as done" });
+    } else {
+      habit.days = 1;
+      habit.lastUpdated = new Date();
+      habit.startedAt = new Date();
+      habit.save();
+      res.status(200).json({ message: "Habit mark as done" });
+    }
+    res.json(habit);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating Habit" });
+  }
+});
+
+const timeDifferenceInHours = (date1, date2) => {
+  const diffMs = Math.abs(date1 - date2);
+  return diffMs / (1000 * 60 * 60);
+};
+const timeDifferenceInDays = (date1, date2) => {
+  const diffMs = Math.abs(date1 - date2);
+  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+};
 module.exports = router;
