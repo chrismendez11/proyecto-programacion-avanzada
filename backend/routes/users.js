@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const bcrypt = require("bcrypt");
+const User = require("../models/user");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -9,6 +10,7 @@ router.get("/", function (req, res, next) {
 
 router.post("/register", async function (req, res, next) {
   try {
+    console.log("register");
     const { username, password } = req.body;
 
     const salt = bcrypt.genSaltSync(10);
