@@ -1,0 +1,21 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "app.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/app.js"
+        }
+    ],
+    "env": {
+        "NODE_ENV": "production",
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb+srv://Cluster85403:T5b421dTTN120x9h@cluster85403.1kbny.mongodb.net/habitos_app?retryWrites=true&w=majority&appName=Cluster85403",
+        "JWT_SECRET": "secret"
+    }
+}

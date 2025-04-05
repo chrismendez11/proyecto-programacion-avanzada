@@ -18,7 +18,7 @@ const authenticateToken = (req, res, next) => {
 
 /* GET home page. */
 router.get("/", authenticateToken, function (req, res, next) {
-  res.render("index", { title: "Express" });
+  res.json("index", { title: "Express" });
 });
 
 router.post("/habits", authenticateToken, async function (req, res, next) {
