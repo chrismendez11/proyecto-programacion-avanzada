@@ -1,5 +1,5 @@
 export const fetchHabits = async (token: string) => {
-  const response = await fetch("http://localhost:3001/habits", {
+  const response = await fetch("https://proyecto-programacion-avanzada-v1.vercel.app/habits", {
     headers: { Authorization: 'Bearer ' + token }
   });
 
@@ -11,7 +11,7 @@ export const fetchHabits = async (token: string) => {
 };
 
 export const fetchAddHabit = async (token: string, title: string, description: string) => {
-  const response = await fetch("http://localhost:3001/habits", {
+  const response = await fetch("https://proyecto-programacion-avanzada-v1.vercel.app//habits", {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + token,

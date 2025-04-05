@@ -1,5 +1,5 @@
 export const fetchRegisterUser = async (username: string, password: string) => {
-  const response = await fetch("http://localhost:3001/users/register", {
+  const response = await fetch("https://proyecto-programacion-avanzada-v1.vercel.app/register", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -18,7 +18,7 @@ export const fetchRegisterUser = async (username: string, password: string) => {
 };
 
 export const fetchLoginUser = async (username: string, password: string) => {
-  const response = await fetch("http://localhost:3001/users/login", {
+  const response = await fetch("https://proyecto-programacion-avanzada-v1.vercel.app/login", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
