@@ -1,5 +1,5 @@
-import { fetchHabitsThunk, markAsDoneThunk } from "@/features/habitSlice";
-import { AppDispatch } from "@/store/store";
+import { fetchAddHabitThunk, fetchHabitsThunk, markAsDoneThunk } from "@/features/habitSlice";
+import { AppDispatch, RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 
 type Habit = {
@@ -31,17 +31,21 @@ export default function Habits({ habits }: HabitsProps) {
         return Math.min((days / 66) * 100, 100);
     }
 
+    const handleAddHabit = () => {
+        if (title && description) {
+            dispatch(fetchAddHabitThunk({ token: user ? user.toString() : '', title, description }));
+            setTitle('');
+            setDescription('');
+            dispatch(fetchHabitsThunk());
+        }
+    }
+
     return (
-        <ul className="space-y-4">
-            {habits.map((habit) => (
-                <li key={habit._id}>
-                    <h2>{habit.title}</h2>
-                    <progress className="w-24" value={calculateProgress(habit.days)} max={100}></progress>
-                    <button className="ml-4 px-2 py-1 text-sm text-white bg-blue-500 rounded cursor-pointer" onClick={() => handleMarkAsDone(habit._id, dispatch)}>{status[habit._id] === 'loading' ? 'processing' : 'mark as done'}</button>
-                    {status[habit._id] === 'failed' && <span className="text-red-500">{error[habit._id]}</span>}
-                    {status[habit._id] === 'success' && <span className="text-red-500">Already marked as done</span>}
-                </li>
-            ))}
-        </ul>
+        <div>
+            <h1>Habits</h1>
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+            <button onClick={handleAddHabit}>Add Habit</button>
+        </div>
     );
 }

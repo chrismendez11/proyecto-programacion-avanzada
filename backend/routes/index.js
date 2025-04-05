@@ -2,37 +2,51 @@ var express = require("express");
 var router = express.Router();
 const Habit = require("../models/habit");
 
+const authenticateToken = (req, res, next) => {
+  const token = req.header('Authorization');
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
+
+  try {
+    const tokenWithoutBearer = token.replace("Bearer ", "");
+    const verify = jwt.verify(tokenWithoutBearer, process.env.JWT_SECRET);
+    req.user = verify;
+    next();
+  } catch (error) {
+    res.status(403).json({ message: "Forbidden" });
+  }
+};
+
 /* GET home page. */
-router.get("/", function (req, res, next) {
+router.get("/", authenticateToken, function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-router.post("/habits", async function (req, res, next) {
+router.post("/habits", authenticateToken, async function (req, res, next) {
   const { title, description } = req.body;
   const habit = new Habit({ title, description });
   await habit.save();
   res.json(habit);
 });
 
-router.get("/habits", async function (req, res, next) {
+router.get("/habits", authenticateToken, async function (req, res, next) {
   const habits = await Habit.find();
   res.json(habits);
 });
 
-router.put("/habits/:id", async function (req, res, next) {
+router.put("/habits/:id", authenticateToken, async function (req, res, next) {
   const { id } = req.params;
   const { title, description } = req.body;
   const habit = await Habit.findByIdAndUpdate(id, { title, description });
   res.json(habit);
 });
 
-router.delete("/habits/:id", async function (req, res, next) {
+router.delete("/habits/:id", authenticateToken, async function (req, res, next) {
   const { id } = req.params;
   await Habit.findByIdAndDelete(id);
   res.json({ message: "Habit deleted" });
 });
 
-router.patch("/habits/markasdone/:id", async function (req, res, next) {
+router.patch("/habits/markasdone/:id", authenticateToken, async function (req, res, next) {
   try {
     const habit = await Habit.findById(req.params.id);
     habit.lastDone = new Date();
